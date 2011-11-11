@@ -20,9 +20,9 @@ These are the current guidelines for writing scripts and should give you the bes
 + Scripts must be a script module, i.e. Get-Help.psm1
 + The main returning function must have the same name as the script itself
 
-	function Get-Help {
-	...
-	}
+		function Get-Help {
+		...
+		}
 	
 + Scripts must utilise [Advanced Functions](http://technet.microsoft.com/en-us/magazine/hh413265.aspx) 
 
