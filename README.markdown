@@ -24,7 +24,7 @@ These are the current guidelines for writing scripts and should give you the bes
 		...
 		}
 	
-+ Scripts must utilise [Advanced Functions](http://technet.microsoft.com/en-us/magazine/hh413265.aspx) 
++ Scripts must utilise [Advanced Functions](http://technet.microsoft.com/en-us/magazine/hh413265.aspx) to aid in discoverability and consistency of documentation
 
 _Note:_ Some of the above are optional, however for inclusion here we ask that they are all adhered to.
 	
