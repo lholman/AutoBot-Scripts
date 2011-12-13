@@ -25,6 +25,7 @@ These are the current guidelines for writing scripts and should give you the bes
 		}
 	
 + Scripts must utilise [Advanced Functions](http://technet.microsoft.com/en-us/magazine/hh413265.aspx) to aid in discoverability and consistency of documentation
++ Scripts must return System.String or System.Hastable types to guarantee AutoBot being able to pass the output
 
 _Note:_ Some of the above are optional, however for inclusion here we ask that they are all adhered to.
 	
