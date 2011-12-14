@@ -72,17 +72,26 @@ Process {
 				Write-Debug "1. Found build configuration by selected project name: '$($tcprojectname)' and build configuration name: '$($tcbuildtypename)'"
 				
 				$pinnedBuilds = $tcClient.BuildsByBuildLocator([TeamCitySharp.BuildLocator]::WithDimensions([TeamCitySharp.BuildTypeLocator]::WithId($buildConfig.Id), $null, $null, [TeamCitySharp.BuildStatus]::SUCCESS, $false, $false, $false, $true, 2, $null, $null, $null));
-				Write-Debug "2. Found the latest 2 pinned builds by build configuration id: '$($buildConfig.Id)', status: SUCCESS"
-				
+				Write-Debug "2. Found the latest '$($pinnedBuilds.Count)' pinned builds by build configuration id: '$($buildConfig.Id)', status: SUCCESS"
+				Write-Debug "$pinnedBuilds[0].Id"
+				Write-Debug "$pinnedBuilds[1].Id"
 				$youngestPinnedBuildChanges = $tcClient.ChangesByBuildId($pinnedBuilds[0].Id)
 				$oldestPinnedBuildchanges = $tcClient.ChangesByBuildId($pinnedBuilds[1].Id)
-				Write-Debug "3. Retrieved '$($youngestPinnedBuildChanges.Count)' (youngest pinned build) and '$($oldestPinnedBuildchanges.Count)' (oldest pinned build) changes in the last 2 pinned builds"
+				#Write-Debug "3. Retrieved '$($youngestPinnedBuildChanges.Count)' (youngest pinned build) and '$($oldestPinnedBuildchanges.Count)' (oldest pinned build) changes in the last 2 pinned builds"
+				#Write-Debug "youngest $($youngestPinnedBuildChanges)"
+				#Write-Debug "oldest $($oldestPinnedBuildchanges)"
+				
+				if ($youngestPinnedBuildChanges -eq $null)
+				{
+					Write-Debug "youngest is null"
+				}
 				
 				$changesBetween = $tcClient.ChangesByConfigurationIdAndSinceChangeId($buildConfig.Id, $oldestPinnedBuildchanges[$oldestPinnedBuildchanges.Count - 1].Id)
 				$changesBetween.Add($tcClient.ChangeDetailsByChangeId($oldestPinnedBuildchanges[$oldestPinnedBuildchanges.Count - 1].Id))
 				Write-Debug "4. Retrieved a total of '$($changesBetween.Count)' changes since the oldest change in the oldest pinned build (up to and including the most recent change in the project)"
 			
 				$youngestChangeId = $youngestPinnedBuildChanges[0].Id
+				
 				while ([System.Int32]::Parse($changesBetween[0].Id) -gt [System.Int32]::Parse($youngestChangeId)) 
 					{ $changesBetween.RemoveAt(0); Write-Debug "? '$($changesBetween[0].Id)' > '$($youngestChangeId)'" }
 				
@@ -97,7 +106,6 @@ Process {
 				}
 				Write-Debug "6. Retrieved change details for each change and formatted output"
 				
-
 			}
 			catch [System.Net.WebException]{
 				$result = "$tcserver is not a valid servername, please be sure to use the FQDN:port where necessary." 
