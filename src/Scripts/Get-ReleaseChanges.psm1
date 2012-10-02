@@ -40,7 +40,7 @@ with a default buildType (build configuration) name "1_Build".
             [string]$tcpassword
         )
 Begin {
-		$DebugPreference = "Continue"
+		$DebugPreference = "SilentlyContinue"
     }	
 Process {
 			Try 
@@ -54,7 +54,7 @@ Process {
 					$tcbuildtypename = "1_Build"
 				}
 				
-				$teamCitySharp = Add-Type -Path "..\TeamCitySharp.dll"
+				$teamCitySharp = Add-Type -Path "..\..\lib\TeamCitySharp.dll"
 				$tcClient = New-Object -TypeName TeamCitySharp.TeamCityClient -ArgumentList $tcserver
 				
 				if ($tcusername -eq "" -and $tcpassword -eq "")
@@ -85,12 +85,12 @@ Process {
 				if ($mostRecentBuildChanges.Count -eq $null)
 				{
 					Write-Debug "The mostRecent pinned build has no changes"
-					#1. Move to the next oldest build and look for the most recent change
+					#1. Move to the next mostRecent build and look for the most recent change
 				}
 				Write-Debug "3. Most recent calculated build (buildId: '$($buildId)') with changes has '$($mostRecentBuildChanges.Count)' change(s)"
 				
 				$buildId = $pinnedBuilds[1].Id
-				Write-Debug "4. Retrieving oldest pinned build (buildId: '$($buildId)') change information..."
+				Write-Debug "4. Retrieving next oldest pinned build (buildId: '$($buildId)') change information..."
 				$changeCount = 0
 				$i = 0
 				while ($changeCount -le 0)
